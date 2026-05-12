@@ -179,3 +179,8 @@ nav {
     background-color:#3685fb; /* Hover effect */
     color:white; /* Hover effect */
 }
+
+.logo-icon {
+  width: 26px;
+  height: 26px;
+}

@@ -1,34 +1,59 @@
 import React, { useState } from "react";
 import "./Sign_Up.css";
+import { useNavigate } from "react-router-dom";
+import { API_URL } from "../config";
 
 const Sign_Up = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    email: "",
-    password: "",
-  });
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [showerr, setShowerr] = useState("");
 
-  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-    setError("");
-  };
+  // ✅ Phone validation: exactly 10 digits
+  const validatePhone = (phone) => /^[0-9]{10}$/.test(phone);
 
-  const validatePhone = (phone) => {
-    return /^[0-9]{10}$/.test(phone); // MUST be exactly 10 digits
-  };
-
-  const handleSubmit = (e) => {
+  const register = async (e) => {
     e.preventDefault();
 
-    if (!validatePhone(formData.phone)) {
-      setError("Phone number must contain exactly 10 digits.");
+    // ❌ Validate phone before API call
+    if (!validatePhone(phone)) {
+      setShowerr("Phone number must be exactly 10 digits.");
       return;
     }
 
-    console.log("Form Submitted:", formData);
+    const response = await fetch(`${API_URL}/api/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+        phone,
+      }),
+    });
+
+    const json = await response.json();
+
+    if (json.authtoken) {
+      sessionStorage.setItem("auth-token", json.authtoken);
+      sessionStorage.setItem("name", name);
+      sessionStorage.setItem("phone", phone);
+      sessionStorage.setItem("email", email);
+
+      navigate("/");
+      window.location.reload();
+    } else {
+      if (json.errors) {
+        setShowerr(json.errors[0].msg);
+      } else {
+        setShowerr(json.error || "Registration failed");
+      }
+    }
   };
 
   return (
@@ -46,85 +71,88 @@ const Sign_Up = () => {
             </a>
           </span>
         </div>
-
         <div className="signup-form">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={register}>
+
+            {/* Name */}
             <div className="form-group">
               <label>Name</label>
               <input
                 type="text"
-                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
                 className="form-control"
                 placeholder="Enter your name"
-                value={formData.name}
-                onChange={handleChange}
                 required
               />
             </div>
 
+            {/* Email */}
+            <div className="form-group">
+              <label>Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-control"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
+
+            {/* Phone */}
             <div className="form-group">
               <label>Phone</label>
               <input
                 type="tel"
-                name="phone"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 className="form-control"
-                placeholder="Enter your 10-digit phone number"
-                value={formData.phone}
-                onChange={handleChange}
+                placeholder="Enter 10-digit phone number"
+                required
+              />
+            </div>
+
+            {/* Password */}
+            <div className="form-group">
+              <label>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="form-control"
+                placeholder="Enter your password"
                 required
               />
             </div>
 
             {/* Error message */}
-            {error && (
-              <p style={{ color: "red", fontSize: "14px" }}>{error}</p>
+            {showerr && (
+              <div style={{ color: "red", marginBottom: "10px" }}>
+                {showerr}
+              </div>
             )}
 
-            <div className="form-group">
-              <label>Email</label>
-              <input
-                type="email"
-                name="email"
-                className="form-control"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Password</label>
-              <input
-                type="password"
-                name="password"
-                className="form-control"
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
+            {/* Submit button */}
             <div className="btn-group">
               <button type="submit" className="btn btn-primary">
-                Submit
+                Sign Up
               </button>
               <button
                 type="reset"
                 className="btn btn-danger"
-                onClick={() =>
-                  setFormData({
-                    name: "",
-                    phone: "",
-                    email: "",
-                    password: "",
-                  })
-                }
+                onClick={() => {
+                  setName("");
+                  setEmail("");
+                  setPhone("");
+                  setPassword("");
+                  setShowerr("");
+                }}
               >
                 Reset
               </button>
             </div>
+
           </form>
         </div>
       </div>

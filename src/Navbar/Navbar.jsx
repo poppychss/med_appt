@@ -1,72 +1,69 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
+import logo from "../assets/logo.svg";
 
 function Navbar() {
-  const handleClick = () => {
-    const navLinks = document.querySelector(".nav__links");
-    const navIcon = document.querySelector(".nav__icon i");
+  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    navLinks.classList.toggle("active");
+  // ✅ Check auth status on load
+  useEffect(() => {
+    const token = sessionStorage.getItem("auth-token");
+    setIsLoggedIn(!!token);
+  }, []);
 
-    if (navLinks.classList.contains("active")) {
-      navIcon.classList.remove("fa-bars");
-      navIcon.classList.add("fa-times");
-    } else {
-      navIcon.classList.remove("fa-times");
-      navIcon.classList.add("fa-bars");
-    }
+  const handleLogout = () => {
+    sessionStorage.clear();
+    setIsLoggedIn(false);
+    navigate("/");
   };
 
   return (
-    <div>
-      <nav>
-        <div className="nav__logo">
-          <Link to="/">
+    <nav>
+      {/* Logo */}
+      <div className="nav__logo">
+        <Link to="/">
             StayHealthy
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              height="26"
-              width="26"
-              viewBox="0 0 1000 1000"
-              style={{ fill: "#3685fb" }}
-            >
-              <title>Doctor With Stethoscope SVG icon</title>
-              <g>
-                <path d="M499.8,10c91.7,0,166,74.3,166,166c0,91.7-74.3,166-166,166c-91.7,0-166-74.3-166-166C333.8,84.3,408.1,10,499.8,10z"></path>
-              </g>
-            </svg>
-          </Link>
-          <span>.</span>
-        </div>
+            <img src={logo} alt="logo" className="logo-icon" />
+        </Link>
+      </div>
 
-        <div className="nav__icon" onClick={handleClick}>
-          <i className="fa fa-bars"></i>
-        </div>
+      {/* Links */}
+      <ul className="nav__links">
 
-        <ul className="nav__links active">
-          <li className="link">
-            <Link to="/">Home</Link>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+
+        <li>
+          <Link to="/appointments">Appointments</Link>
+        </li>
+
+        {/* ✅ AUTH CONDITIONAL UI */}
+        {!isLoggedIn ? (
+          <>
+            <li>
+              <Link to="/signup">
+                <button className="btn1">Sign Up</button>
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/login">
+                <button className="btn1">Login</button>
+              </Link>
+            </li>
+          </>
+        ) : (
+          <li>
+            <button className="btn1" onClick={handleLogout}>
+              Logout
+            </button>
           </li>
-
-          <li className="link">
-            <Link to="/appointments">Appointments</Link>
-          </li>
-
-          <li className="link">
-            <Link to="/signup">
-              <button className="btn1">Sign Up</button>
-            </Link>
-          </li>
-
-          <li className="link">
-            <Link to="/login">
-              <button className="btn1">Login</button>
-            </Link>
-          </li>
-        </ul>
-      </nav>
-    </div>
+        )}
+      </ul>
+    </nav>
   );
 }
 
