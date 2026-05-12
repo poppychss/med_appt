@@ -1,0 +1,31 @@
+.appointment-card {
+  position: fixed;
+  top: 90px;
+  right: 20px;
+  width: 340px;
+  background: #ffffff;
+  border-left: 6px solid #2190FF;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 20px;
+  z-index: 999;
+}
+
+.appointment-card__title {
+  color: #2190FF;
+  margin-bottom: 12px;
+}
+
+.success-message {
+  color: green;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.close-btn {
+  float: right;
+  border: none;
+  background: grey;
+  font-size: 18px;
+  cursor: pointer;
+}

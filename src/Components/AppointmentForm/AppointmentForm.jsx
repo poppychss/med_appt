@@ -26,12 +26,40 @@ const AppointmentForm = ({ doctorName, doctorSpeciality, onSubmit }) => {
       ];
   
     const handleFormSubmit = (e) => {
-      e.preventDefault();
-      onSubmit({ name, phoneNumber, appointmentDate, selectedSlot });
-      setName('');
-      setPhoneNumber('');
-      setAppointmentDate('');
-      setSelectedSlot('');
+        e.preventDefault();
+
+        const appointmentData = {
+            name,
+            phoneNumber,
+            appointmentDate,
+            selectedSlot,
+            doctorName,
+            doctorSpeciality,
+        };
+
+        // Save appointment in localStorage
+        localStorage.setItem(
+            doctorName,
+            JSON.stringify(appointmentData)
+        );
+
+        // Save doctor details separately
+        localStorage.setItem(
+            "doctorData",
+            JSON.stringify({
+            name: doctorName,
+            speciality: doctorSpeciality,
+            })
+        );
+
+        // Send data to parent component
+        onSubmit(appointmentData);
+
+        // Reset form
+        setName('');
+        setPhoneNumber('');
+        setAppointmentDate('');
+        setSelectedSlot('');
     };
   
     return (
