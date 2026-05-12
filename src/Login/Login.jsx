@@ -1,14 +1,43 @@
 import React, { useState } from "react";
 import "./Login.css";
+import { API_URL } from "../config";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({ email, password });
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch(`${API_URL}/api/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const json = await response.json();
+
+    if (json.authtoken) {
+      // ✅ SAVE AUTH DATA (THIS IS WHAT YOUR NAVBAR NEEDS)
+      sessionStorage.setItem("auth-token", json.authtoken);
+      sessionStorage.setItem("email", email);
+
+      // redirect home
+      window.location.href = "/";
+    } else {
+      alert(json.error || "Invalid credentials");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Server error");
+  }
+};
 
   return (
     <div className="container">
