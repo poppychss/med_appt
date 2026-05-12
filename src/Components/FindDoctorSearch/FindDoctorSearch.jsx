@@ -19,7 +19,7 @@ const FindDoctorSearch = () => {
         window.location.reload();
     }
     return (
-        <div className='finddoctor'>
+        <div className='finddoctor' style={{ marginTop: "10%" }}>
             <center>
                 <h1>Find a doctor and Consult instantly</h1>
                 <div>               <i style={{color:'#000000',fontSize:'20rem'}} className="fa fa-user-md"></i>
