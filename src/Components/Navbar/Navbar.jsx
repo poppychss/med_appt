@@ -80,7 +80,10 @@ const Navbar = () => {
                 {/* Dropdown MUST be inside welcome-user */}
                 <ul className="dropdown-menu">
                     <li>
-                        <ProfileForm />
+                        <Link to="/profile">Your Profile</Link>
+                    </li>
+                    <li>
+                        <Link to="/reports">Your Reports</Link>
                     </li>
                 </ul>
             </li>

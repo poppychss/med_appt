@@ -113,28 +113,27 @@ const ProfileForm = () => {
 
   // Render the profile form with different sections based on edit mode
   return (
-    <div className="profile-container">
+    <div className="profile-container" style={{ marginTop: "10%" }}>
       {editMode ? (
         <form onSubmit={handleSubmit}>
-
           <label>
-         Name
-         <input
-           type="text"
-           name="name"
-           value={updatedDetails.name}
-           onChange={handleInputChange}
-         />
-       </label>
-       <label>
-         Phone
-         <input
-           type="text"
-           name="phone"
-           value={updatedDetails.phone}
-           onChange={handleInputChange}
-         />
-       </label>
+            Name
+            <input
+            type="text"
+            name="name"
+            value={updatedDetails.name}
+            onChange={handleInputChange}
+            />
+          </label>
+          <label>
+            Phone
+            <input
+            type="text"
+            name="phone"
+            value={updatedDetails.phone}
+            onChange={handleInputChange}
+            />
+          </label>
           <label>
             Email
             <input
@@ -148,6 +147,7 @@ const ProfileForm = () => {
         </form>
       ) : (
         <div className="profile-details">
+          <h1>Welcome, {userDetails.name}</h1>
             <p> <b>Email:</b> {userDetails.email}</p>
             <p><b>Phone:</b> {userDetails.phone}</p>
           <button onClick={handleEdit}>Edit</button>
