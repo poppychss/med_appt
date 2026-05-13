@@ -58,21 +58,16 @@ const Notification = ({ children }) => {
     // Listen for appointment cancellation
     const handleStorageChange = () => {
 
-      const updatedDoctorData = JSON.parse(
-        localStorage.getItem('doctorData')
-      );
-
-      const updatedAppointmentData = updatedDoctorData
-        ? JSON.parse(localStorage.getItem(updatedDoctorData.name))
-        : null;
-
-      // Hide notification if appointment removed
-      if (!updatedAppointmentData) {
-
-        setAppointmentData(null);
-
-        setShowNotification(false);
-      }
+        const doctor = JSON.parse(localStorage.getItem("doctorData"));
+      
+        const appointment = doctor
+          ? JSON.parse(localStorage.getItem(doctor.name))
+          : null;
+      
+        if (!appointment || appointment.length === 0) {
+          setAppointmentData(null);
+          setShowNotification(false);
+        }
     };
 
     // Listen to storage updates
@@ -105,7 +100,22 @@ const Notification = ({ children }) => {
             {/* Close button */}
             <button
               className="close-btn"
-              onClick={() => setShowNotification(false)}
+              onClick={() => {
+
+                // hide UI
+                setShowNotification(false);
+              
+                // clear state
+                setAppointmentData(null);
+                setDoctorData(null);
+              
+                // remove storage (this is the key fix)
+                if (doctorData?.name) {
+                  localStorage.removeItem(doctorData.name);
+                }
+              
+                localStorage.removeItem("doctorData");
+              }}
             >
               ×
             </button>

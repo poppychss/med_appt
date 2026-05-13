@@ -14,18 +14,61 @@ const DoctorCard = ({ name, speciality, experience, ratings, profilePic }) => {
     setShowModal(true);
   };
 
+  useEffect(() => {
+    const storedAppointments = JSON.parse(localStorage.getItem(name));
+  
+    if (Array.isArray(storedAppointments)) {
+      setAppointments(storedAppointments);
+    } else {
+      setAppointments([]); // ✅ always fallback to array
+    }
+  }, [name]);
+
   const handleCancel = (appointmentId) => {
-    const updatedAppointments = appointments.filter((appointment) => appointment.id !== appointmentId);
+
+    const updatedAppointments = appointments.filter(
+      (appointment) => appointment.id !== appointmentId
+    );
+  
     setAppointments(updatedAppointments);
+  
+    // ✅ UPDATE LOCAL STORAGE (THIS FIXES NOTIFICATION)
+    if (updatedAppointments.length === 0) {
+      localStorage.removeItem("doctorData");
+      localStorage.removeItem(name); // key used in Notification
+    } else {
+      localStorage.setItem(
+        name,
+        JSON.stringify(updatedAppointments)
+      );
+    }
+  
+    // ✅ force sync for same-tab update
+    window.dispatchEvent(new Event("storage"));
   };
 
   const handleFormSubmit = (appointmentData) => {
+
     const newAppointment = {
       id: uuidv4(),
       ...appointmentData,
     };
-    const updatedAppointments = [...appointments, newAppointment];
+  
+    const safeAppointments = Array.isArray(appointments)
+      ? appointments
+      : [];
+  
+    const updatedAppointments = [...safeAppointments, newAppointment];
+  
     setAppointments(updatedAppointments);
+  
+    localStorage.setItem(name, JSON.stringify(updatedAppointments));
+  
+    localStorage.setItem("doctorData", JSON.stringify({
+      name,
+      speciality,
+    }));
+  
     setShowModal(false);
   };
 
