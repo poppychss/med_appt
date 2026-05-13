@@ -1,0 +1,84 @@
+.review-popup-container {
+  background: white;
+  padding: 25px;
+  width: 400px;
+  border-radius: 10px;
+}
+
+.doctor-info {
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+.star-rating {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.star-rating {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.review-star {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.review-star:hover {
+  transform: scale(1.15);
+}
+
+.star:hover {
+  transform: scale(1.2);
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.submit-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.close-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.feedback-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.warning {
+  color: red;
+  margin-bottom: 10px;
+}
