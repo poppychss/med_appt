@@ -42,3 +42,28 @@
 .download-btn:hover {
   background-color: #0056b3;
 }
+
+.report-link {
+  text-decoration: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 5px;
+  display: inline-block;
+  font-size: 14px;
+}
+
+.view-btn {
+  background-color: #007bff;
+}
+
+.view-btn:hover {
+  background-color: #0056b3;
+}
+
+.download-btn {
+  background-color: #007bff;
+}
+
+.download-btn:hover {
+  background-color: #0056b3;
+}

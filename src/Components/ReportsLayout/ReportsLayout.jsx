@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./ReportsLayout.css";
 
 const ReportsLayout = () => {
+
   const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
@@ -40,16 +41,25 @@ const ReportsLayout = () => {
 
               {/* View Report */}
               <td>
-                <button className="view-btn">
+                <a
+                  target="_blank"
+                  href="patient_report.pdf"
+                  className="report-link view-btn"
+                  rel="noreferrer"
+                >
                   View Report
-                </button>
+                </a>
               </td>
 
               {/* Download Report */}
               <td>
-                <button className="download-btn">
+                <a
+                  href="patient_report.pdf"
+                  download
+                  className="report-link download-btn"
+                >
                   Download Report
-                </button>
+                </a>
               </td>
 
             </tr>
@@ -57,6 +67,7 @@ const ReportsLayout = () => {
         </tbody>
 
       </table>
+
     </div>
   );
 };
