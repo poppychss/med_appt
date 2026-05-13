@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import ProfileForm from "../ProfileCard/ProfileCard";
 
 import "./Navbar.css";
 
@@ -72,13 +73,23 @@ const Navbar = () => {
         </li>
         {isLoggedIn?(
           <>
-            <p>Welcome, {username}</p>
-            <li className="link">
-              <button className="btn2" onClick={handleLogout}>
-                Logout
-              </button>
+            <li className="link welcome-user">
+        
+                <p>Welcome, {username}</p>
+        
+                {/* Dropdown MUST be inside welcome-user */}
+                <ul className="dropdown-menu">
+                    <li>
+                        <ProfileForm />
+                    </li>
+                </ul>
             </li>
-            
+        
+            <li className="link">
+                <button className="btn2" onClick={handleLogout}>
+                Logout
+                </button>
+            </li>
           </>
         ) : (
           <>
